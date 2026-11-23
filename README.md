@@ -86,15 +86,22 @@ It catches most fraud but flags many legitimate claims along the way.
 
 | File | Contents |
 |------|----------|
-| `TA_Matthew(Hyperparameter Tuning).ipynb` | EDA, preprocessing, grid searches, base-model and ensemble evaluation, threshold sweeps |
-| `TA_Matthew(Final Prediction).ipynb` | Date split, final SV model, fraud probabilities exported to `insurance_claims_with_probs(846).csv` and `(154).csv` |
-| `Model_Reasuransi .ipynb` | The four reinsurance cases (reads the two exported CSVs) |
+| `01_hyperparameter_tuning.ipynb` | EDA, preprocessing, grid searches, base-model and ensemble evaluation, threshold sweeps |
+| `02_final_prediction.ipynb` | Date split, final SV model, fraud probabilities written to the two `insurance_claims_with_probs` CSVs |
+| `03_reinsurance_model.ipynb` | The four reinsurance cases |
 | `insurance_claims.csv` | Raw claims data |
+| `insurance_claims_with_probs(846).csv` / `(154).csv` | Model period and actual period claims, each with `fraud_prob` |
+| `requirements.txt` | Pinned environment that reproduces the saved outputs |
 
 ## Running
 
 ```bash
-pip install pandas numpy scikit-learn xgboost seaborn plotly
+uv venv -p 3.10 && source .venv/bin/activate   # or any Python 3.10 environment
+pip install -r requirements.txt
+jupyter lab
 ```
 
-Run the notebooks in this order: **Final Prediction**, then **Model_Reasuransi**. The probability CSVs are not committed; the Final Prediction notebook generates them. The written thesis itself is not in this repo.
+- `03_reinsurance_model.ipynb` runs on its own from the committed CSVs.
+- Re-running `02_final_prediction.ipynb` regenerates the CSVs. With the pinned versions it gives the same values (checked in 2026).
+- Use the pinned versions. Current pandas, NumPy and scikit-learn break the notebooks, and current pandas silently changes the data by reading `None` in `authorities_contacted` as missing.
+- The written thesis is not in this repo.
